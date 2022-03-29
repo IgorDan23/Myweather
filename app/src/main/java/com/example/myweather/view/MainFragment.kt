@@ -14,6 +14,7 @@ import com.example.myweather.R
 import com.example.myweather.databinding.FragmentMainBinding
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.MainViewModel
+import com.example.myweather.viewmodel.num
 
 class MainFragment : Fragment() {
 
@@ -25,7 +26,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        // return inflater.inflate(R.layout.fragment_main, container, false)
+        initRadioGroup()
         return binding.root
     }
 
@@ -51,10 +52,11 @@ class MainFragment : Fragment() {
             is AppState.Loadind -> binding.loadingLayout.visibility = View.VISIBLE
             is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
-                binding.cityName.text=data.weatherData.city.name
-                binding.cityCoordinates.text="${data.weatherData.city.lat.toString()} ${data.weatherData.city.lon}"
-                binding.feelsLikeValue.text=data.weatherData.feelsLike.toString()
-                binding.temperatureValue.text=data.weatherData.temperature.toString()
+                binding.cityName.text = data.weatherData.city.name
+                binding.cityCoordinates.text =
+                    "${data.weatherData.city.lat.toString()} ${data.weatherData.city.lon}"
+                binding.feelsLikeValue.text = data.weatherData.feelsLike.toString()
+                binding.temperatureValue.text = data.weatherData.temperature.toString()
                 Toast.makeText(requireContext(), "Исправно", Toast.LENGTH_LONG).show()
             }
         }
@@ -66,5 +68,28 @@ class MainFragment : Fragment() {
         @JvmStatic
         fun newInstance() = MainFragment()
 
+    }
+
+    private fun initRadioGroup() {
+        binding.one.setOnClickListener(lisener)
+        binding.two.setOnClickListener(lisener)
+
+
+    }
+
+    val lisener: View.OnClickListener = View.OnClickListener {
+        when (it.getId()) {
+            R.id.one -> {
+                num = 1
+                ViewModelProvider(this).get(MainViewModel::class.java).getWeather()
+            }
+            R.id.two -> {
+                num = 2
+                ViewModelProvider(this).get(MainViewModel::class.java).getWeather()
+
+
+            }
+
+        }
     }
 }
