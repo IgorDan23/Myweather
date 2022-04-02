@@ -2,6 +2,7 @@ package com.example.myweather.view
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log.i
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,6 @@ import com.example.myweather.R
 import com.example.myweather.databinding.FragmentMainBinding
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.MainViewModel
-import com.example.myweather.viewmodel.num
 
 class MainFragment : Fragment() {
 
@@ -75,18 +75,20 @@ class MainFragment : Fragment() {
         binding.two.setOnClickListener(lisener)
 
 
+
     }
 
     val lisener: View.OnClickListener = View.OnClickListener {
         when (it.getId()) {
             R.id.one -> {
-                num = 1
-                ViewModelProvider(this).get(MainViewModel::class.java).getWeather()
+                val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+                viewModel.num=1
+                viewModel.getWeather()
             }
             R.id.two -> {
-                num = 2
-                ViewModelProvider(this).get(MainViewModel::class.java).getWeather()
-
+                val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+                viewModel.num=2
+                viewModel.getWeather()
 
             }
 

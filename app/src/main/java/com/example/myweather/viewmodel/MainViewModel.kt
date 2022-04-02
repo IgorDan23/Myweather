@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myweather.repository.RepositoryImp
 import java.lang.Thread.sleep
-var num:Int=1
-class MainViewModel(
+
+open class MainViewModel(
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
    private val repository: RepositoryImp = RepositoryImp()
 ) : ViewModel() {
+    var num:Int=1
+
 
 
     fun getData(): LiveData<AppState> {
