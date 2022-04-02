@@ -4,14 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myweather.repository.RepositoryImp
-import java.lang.Thread.sleep
 
 open class MainViewModel(
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
-   private val repository: RepositoryImp = RepositoryImp()
+    private val repository: RepositoryImp = RepositoryImp()
 ) : ViewModel() {
-    var num:Int=1
-
+    var num: Int = 1
 
 
     fun getData(): LiveData<AppState> {
@@ -22,10 +20,9 @@ open class MainViewModel(
         Thread {
 
             liveData.postValue(AppState.Loadind)
-            if(num==1){
-            liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
-            }
-            else liveData.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
+            if (num == 1) {
+                liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+            } else liveData.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
 
         }.start()
     }
