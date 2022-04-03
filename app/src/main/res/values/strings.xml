@@ -10,5 +10,8 @@
     <string name="reload">Reload</string>
     <string name="server">Server</string>
     <string name="localstorage">LocalStorage</string>
+    <string name="russia">Russia</string>
+    <string name="world">World</string>
+    <string name="serverworld">ServerWorld</string>
 
 </resources>

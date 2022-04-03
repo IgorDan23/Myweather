@@ -2,7 +2,7 @@ package com.example.myweather
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.myweather.view.MainFragment
+import com.example.myweather.view.weatherlist.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         if (savedInstanceState==null){
-            supportFragmentManager.beginTransaction().replace(R.id.container, MainFragment.newInstance()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.container, WeatherListFragment.newInstance()).commit()
         }
     }
 }

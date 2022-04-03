@@ -1,6 +1,5 @@
-package com.example.myweather.view
+package com.example.myweather.view.weatherlist
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,22 +9,24 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.R
-import com.example.myweather.databinding.FragmentMainBinding
+import com.example.myweather.databinding.FragmentWeatherListBinding
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.MainViewModel
 
-class MainFragment : Fragment() {
+class WeatherListFragment : Fragment() {
 
-    private var _binding: FragmentMainBinding?=null
-    private val binding: FragmentMainBinding
-    get() {
-        return _binding!!
-    }
+    private var _binding: FragmentWeatherListBinding? = null
+    private val binding: FragmentWeatherListBinding
+        get() {
+            return _binding!!
+        }
+
+    private val adapter = WeatherListAdapter()
 
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding=null
+        _binding = null
     }
 
 
@@ -33,7 +34,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentWeatherListBinding.inflate(inflater, container, false)
         initRadioGroup()
         return binding.root
     }
@@ -49,22 +50,23 @@ class MainFragment : Fragment() {
 
         }
         viewModel.getData().observe(viewLifecycleOwner, observer)
-        viewModel.getWeather()
+        viewModel.russianWeather()
+        viewModel.worldWeather()
+        viewModel.weatherFromServer()
+
 
     }
 
-    @SuppressLint("SetTextI18n")
+
     private fun renderData(data: AppState) {
         when (data) {
             is AppState.Error -> binding.loadingLayout.visibility = View.GONE
             is AppState.Loadind -> binding.loadingLayout.visibility = View.VISIBLE
             is AppState.Success -> {
                 binding.loadingLayout.visibility = View.GONE
-                binding.cityName.text = data.weatherData.city.name
-                binding.cityCoordinates.text =
-                    "${data.weatherData.city.lat.toString()} ${data.weatherData.city.lon}"
-                binding.feelsLikeValue.text = data.weatherData.feelsLike.toString()
-                binding.temperatureValue.text = data.weatherData.temperature.toString()
+                data.weatherList
+                binding.recyclerView.adapter = adapter
+                adapter.setWeather(data.weatherList)
                 Toast.makeText(requireContext(), "Исправно", Toast.LENGTH_LONG).show()
             }
         }
@@ -74,28 +76,34 @@ class MainFragment : Fragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance() = MainFragment()
+        fun newInstance() = WeatherListFragment()
 
     }
 
     private fun initRadioGroup() {
-        binding.one.setOnClickListener(lisener)
-        binding.two.setOnClickListener(lisener)
+        binding.russian.setOnClickListener(lisener)
+        binding.world.setOnClickListener(lisener)
+        binding.worldServer.setOnClickListener(lisener)
 
 
     }
 
     val lisener: View.OnClickListener = View.OnClickListener {
         when (it.getId()) {
-            R.id.one -> {
+            R.id.russian -> {
                 val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-                viewModel.num = 1
-                viewModel.getWeather()
+                viewModel.russianWeather()
+
             }
-            R.id.two -> {
+            R.id.world -> {
                 val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-                viewModel.num = 2
-                viewModel.getWeather()
+                viewModel.worldWeather()
+
+            }
+            R.id.world_server -> {
+                val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+                viewModel.weatherFromServer()
+
 
             }
 

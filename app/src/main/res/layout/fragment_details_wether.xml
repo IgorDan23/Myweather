@@ -89,16 +89,21 @@
             app:layout_constraintTop_toTopOf="@+id/guideline2">
 
             <RadioButton
-                android:id="@+id/one"
+                android:id="@+id/russian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/server" />
+                android:text="Russia" />
 
             <RadioButton
-                android:id="@+id/two"
+                android:id="@+id/world"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/localstorage" />
+                android:text="World" />
+            <RadioButton
+                android:id="@+id/world_server"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ServerWorld" />
 
 
 

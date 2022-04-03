@@ -1,14 +1,19 @@
 package com.example.myweather.repository
 
 class RepositoryImp:Repository {
-    override fun getWeatherFromServer(): Weather {
+    override fun getWeatherFromServer(): List<Weather> {
         Thread.sleep(5000)
-        return Weather()
+        return getServerWorldCities()
     }
 
-    override fun getWeatherFromLocalStorage(): Weather {
+    override fun getRussianWeatherFromLocalStorage(): List<Weather> {
         Thread.sleep(2000)
-        return Weather()
+        return getRussianCities()
+    }
+
+    override fun getWorldWeatherFromLocalStorage(): List<Weather> {
+        Thread.sleep(2000)
+        return getWorldCities()
     }
 
 }

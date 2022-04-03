@@ -5,24 +5,30 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.myweather.repository.RepositoryImp
 
-open class MainViewModel(
+class MainViewModel(
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
     private val repository: RepositoryImp = RepositoryImp()
 ) : ViewModel() {
     var num: Int = 1
+
+    fun russianWeather()=getWeather(1)
+    fun worldWeather()=getWeather(2)
+    fun weatherFromServer()=getWeather(3)
+
 
 
     fun getData(): LiveData<AppState> {
         return liveData
     }
 
-    fun getWeather() {
+   private fun getWeather(numWeatherRep:Int) {
         Thread {
-
             liveData.postValue(AppState.Loadind)
-            if (num == 1) {
-                liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
-            } else liveData.postValue(AppState.Success(repository.getWeatherFromLocalStorage()))
+            when (numWeatherRep){
+                1-> liveData.postValue(AppState.Success(repository.getRussianWeatherFromLocalStorage()))
+                2-> liveData.postValue(AppState.Success(repository.getWorldWeatherFromLocalStorage()))
+                3-> liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+            }
 
         }.start()
     }
