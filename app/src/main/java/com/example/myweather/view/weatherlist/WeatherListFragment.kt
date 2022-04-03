@@ -10,10 +10,13 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListBinding
+import com.example.myweather.repository.Weather
+import com.example.myweather.repository.utils.KEY_WEATHER
+import com.example.myweather.view.detailsweather.DetailsWeatherFragment
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.MainViewModel
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnClick {
 
     private var _binding: FragmentWeatherListBinding? = null
     private val binding: FragmentWeatherListBinding
@@ -21,7 +24,7 @@ class WeatherListFragment : Fragment() {
             return _binding!!
         }
 
-    private val adapter = WeatherListAdapter()
+    private val adapter = WeatherListAdapter(this)
 
 
     override fun onDestroy() {
@@ -51,8 +54,6 @@ class WeatherListFragment : Fragment() {
         }
         viewModel.getData().observe(viewLifecycleOwner, observer)
         viewModel.russianWeather()
-        viewModel.worldWeather()
-        viewModel.weatherFromServer()
 
 
     }
@@ -84,8 +85,6 @@ class WeatherListFragment : Fragment() {
         binding.russian.setOnClickListener(lisener)
         binding.world.setOnClickListener(lisener)
         binding.worldServer.setOnClickListener(lisener)
-
-
     }
 
     val lisener: View.OnClickListener = View.OnClickListener {
@@ -108,5 +107,14 @@ class WeatherListFragment : Fragment() {
             }
 
         }
+    }
+
+    override fun OnItemClick(weather: Weather) {
+        val bundle = Bundle()
+        bundle.putParcelable(KEY_WEATHER, weather)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.container, DetailsWeatherFragment.newInstance(bundle)).addToBackStack("")
+            .commit()
+
     }
 }

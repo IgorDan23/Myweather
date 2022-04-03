@@ -11,23 +11,22 @@ class MainViewModel(
 ) : ViewModel() {
     var num: Int = 1
 
-    fun russianWeather()=getWeather(1)
-    fun worldWeather()=getWeather(2)
-    fun weatherFromServer()=getWeather(3)
-
+    fun russianWeather() = getWeather(1)
+    fun worldWeather() = getWeather(2)
+    fun weatherFromServer() = getWeather(3)
 
 
     fun getData(): LiveData<AppState> {
         return liveData
     }
 
-   private fun getWeather(numWeatherRep:Int) {
+    private fun getWeather(numWeatherRep: Int) {
         Thread {
             liveData.postValue(AppState.Loadind)
-            when (numWeatherRep){
-                1-> liveData.postValue(AppState.Success(repository.getRussianWeatherFromLocalStorage()))
-                2-> liveData.postValue(AppState.Success(repository.getWorldWeatherFromLocalStorage()))
-                3-> liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
+            when (numWeatherRep) {
+                1 -> liveData.postValue(AppState.Success(repository.getRussianWeatherFromLocalStorage()))
+                2 -> liveData.postValue(AppState.Success(repository.getWorldWeatherFromLocalStorage()))
+                3 -> liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
             }
 
         }.start()
