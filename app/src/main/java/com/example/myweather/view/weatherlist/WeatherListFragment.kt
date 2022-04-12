@@ -36,7 +36,7 @@ class WeatherListFragment : Fragment(), OnClick {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentWeatherListBinding.inflate(inflater, container, false)
         initRadioGroup()
         return binding.root
@@ -48,14 +48,10 @@ class WeatherListFragment : Fragment(), OnClick {
         val observer = object : Observer<AppState> {
             override fun onChanged(t: AppState) {
                 renderData(t)
-
             }
-
         }
         viewModel.getData().observe(viewLifecycleOwner, observer)
         viewModel.russianWeather()
-
-
     }
 
 
@@ -112,10 +108,10 @@ class WeatherListFragment : Fragment(), OnClick {
     }
 
     override fun OnItemClick(weather: Weather) {
-        val bundle = Bundle()
-        bundle.putParcelable(KEY_WEATHER, weather)
         requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.container, DetailsWeatherFragment.newInstance(bundle)).addToBackStack("")
+            .add(R.id.container, DetailsWeatherFragment.newInstance(Bundle().apply {
+                putParcelable(KEY_WEATHER, weather)
+            })).addToBackStack("")
             .commit()
 
     }

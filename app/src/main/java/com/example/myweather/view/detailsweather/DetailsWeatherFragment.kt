@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import com.example.myweather.databinding.FragmentDetailsWetherBinding
 import com.example.myweather.repository.Weather
 import com.example.myweather.repository.utils.KEY_WEATHER
+import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_details_wether.*
 
 class DetailsWeatherFragment : Fragment() {
 
@@ -29,15 +31,16 @@ class DetailsWeatherFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDetailsWetherBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather: Weather = arguments?.getParcelable<Weather>(KEY_WEATHER)!!
-        renderData(weather)
+        arguments?.getParcelable<Weather>(KEY_WEATHER)?.let {
+            renderData(it)
+        }
 
     }
 
@@ -49,11 +52,12 @@ class DetailsWeatherFragment : Fragment() {
                 "${weather.city.lat.toString()} ${weather.city.lon}"
             feelsLikeValue.text = weather.feelsLike.toString()
             temperatureValue.text = weather.temperature.toString()
-
         }
+        mainView.showSnackBar()
+    }
 
-        Toast.makeText(requireContext(), "Исправно", Toast.LENGTH_LONG)
-            .show()
+    fun View.showSnackBar() {
+        Snackbar.make(mainView, "Исправно", Snackbar.LENGTH_LONG).show();
     }
 
 
