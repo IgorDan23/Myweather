@@ -43,11 +43,15 @@ class DetailsWeatherFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun renderData(weather: Weather) {
-        binding.cityName.text = weather.city.name
-        binding.cityCoordinates.text =
-            "${weather.city.lat.toString()} ${weather.city.lon}"
-        binding.feelsLikeValue.text = weather.feelsLike.toString()
-        binding.temperatureValue.text = weather.temperature.toString()
+        with(binding) {
+            cityName.text = weather.city.name
+            cityCoordinates.text =
+                "${weather.city.lat.toString()} ${weather.city.lon}"
+            feelsLikeValue.text = weather.feelsLike.toString()
+            temperatureValue.text = weather.temperature.toString()
+
+        }
+
         Toast.makeText(requireContext(), "Исправно", Toast.LENGTH_LONG)
             .show()
     }

@@ -36,9 +36,12 @@ class WeatherListAdapter(
     inner class MyCityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(weather: Weather) {
             val binding = FragmentWeatherListRecyclerItemBinding.bind(itemView)
-            binding.tvNameCity.text = weather.city.name
-            binding.root.setOnClickListener {
-                onClick.OnItemClick(weather)
+            binding.apply {
+                tvNameCity.text = weather.city.name
+                binding.root.setOnClickListener {
+                    onClick.OnItemClick(weather)
+                }
+
             }
 
         }

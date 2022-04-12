@@ -82,9 +82,11 @@ class WeatherListFragment : Fragment(), OnClick {
     }
 
     private fun initRadioGroup() {
-        binding.russian.setOnClickListener(lisener)
-        binding.world.setOnClickListener(lisener)
-        binding.worldServer.setOnClickListener(lisener)
+        binding.also {
+            it.russian.setOnClickListener(lisener)
+            it.world.setOnClickListener(lisener)
+            it.worldServer.setOnClickListener(lisener)
+        }
     }
 
     val lisener: View.OnClickListener = View.OnClickListener {
