@@ -8,12 +8,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.myweather.databinding.FragmentDetailsWetherBinding
+import com.example.myweather.repository.OnServerResponse
 import com.example.myweather.repository.Weather
+import com.example.myweather.repository.WeatherDTO
 import com.example.myweather.repository.utils.KEY_WEATHER
+import com.example.myweather.repository.utils.WeatherLoader
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_details_wether.*
 
-class DetailsWeatherFragment : Fragment() {
+class DetailsWeatherFragment : Fragment(), OnServerResponse {
 
     private var _binding: FragmentDetailsWetherBinding? = null
     private val binding: FragmentDetailsWetherBinding
@@ -35,23 +38,28 @@ class DetailsWeatherFragment : Fragment() {
         _binding = FragmentDetailsWetherBinding.inflate(inflater, container, false)
         return binding.root
     }
-
+lateinit var localWeather: Weather
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.getParcelable<Weather>(KEY_WEATHER)?.let {
-            renderData(it)
+            localWeather=it
+            Thread{
+               WeatherLoader(this@DetailsWeatherFragment).loadWeather(it.city.lat,it.city.lon)
+
+            }.start()
+
         }
 
     }
 
     @SuppressLint("SetTextI18n")
-    private fun renderData(weather: Weather) {
+    private fun renderData(weather: WeatherDTO) {
         with(binding) {
-            cityName.text = weather.city.name
+            cityName.text = localWeather.city.name
             cityCoordinates.text =
-                "${weather.city.lat.toString()} ${weather.city.lon}"
-            feelsLikeValue.text = weather.feelsLike.toString()
-            temperatureValue.text = weather.temperature.toString()
+                "${weather.info.lat.toString()} ${weather.info.lon}"
+            feelsLikeValue.text =  weather.fact.feelsLike.toString()
+            temperatureValue.text = weather.fact.temperature.toString()
         }
         mainView.showSnackBar()
     }
@@ -70,5 +78,9 @@ class DetailsWeatherFragment : Fragment() {
             return fragment
 
         }
+    }
+
+    override fun onResponse(weatherDTO: WeatherDTO) {
+        renderData(weatherDTO)
     }
 }
