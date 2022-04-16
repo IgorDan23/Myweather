@@ -1,16 +1,26 @@
 package com.example.myweather.repository.utils
 
+import android.app.Activity
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.view.View
+import com.example.myweather.MainActivity
 import com.example.myweather.repository.OnServerResponse
+import com.example.myweather.repository.SnackbarResp
 import com.example.myweather.repository.WeatherDTO
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.RuntimeException
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class WeatherLoader(private val onServerResponse: OnServerResponse) {
+class WeatherLoader(
+    private val onServerResponse: OnServerResponse,
+    private val snackbarResp: SnackbarResp
+) {
     fun loadWeather(lat: Double, lon: Double) {
         Thread {
             val urlText = "https://api.weather.yandex.ru/v2/informers?lat=$lat&lon=$lon"
@@ -24,10 +34,15 @@ class WeatherLoader(private val onServerResponse: OnServerResponse) {
 
             try {
                 val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
-                Handler(Looper.getMainLooper()).post { onServerResponse.onResponse(weatherDTO) }
-            }catch (e:NumberFormatException){
-                e.message
-            }finally {
+                Handler(Looper.getMainLooper()).post {
+                    onServerResponse.onResponse(weatherDTO)
+
+                }
+            } catch (e: RuntimeException) {
+                     snackbarResp.OnRespsnackbar("Что-то пошло не так")
+
+
+            } finally {
                 urlConnection.disconnect()
             }
 

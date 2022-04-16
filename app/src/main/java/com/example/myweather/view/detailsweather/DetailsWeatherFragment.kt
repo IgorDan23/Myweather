@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.myweather.R
 import com.example.myweather.databinding.FragmentDetailsWetherBinding
 import com.example.myweather.repository.OnServerResponse
+import com.example.myweather.repository.SnackbarResp
 import com.example.myweather.repository.Weather
 import com.example.myweather.repository.WeatherDTO
 import com.example.myweather.repository.utils.KEY_WEATHER
@@ -16,7 +18,7 @@ import com.example.myweather.repository.utils.WeatherLoader
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_details_wether.*
 
-class DetailsWeatherFragment : Fragment(), OnServerResponse {
+class DetailsWeatherFragment : Fragment(), OnServerResponse,SnackbarResp {
 
     private var _binding: FragmentDetailsWetherBinding? = null
     private val binding: FragmentDetailsWetherBinding
@@ -44,7 +46,7 @@ lateinit var localWeather: Weather
         arguments?.getParcelable<Weather>(KEY_WEATHER)?.let {
             localWeather=it
             Thread{
-               WeatherLoader(this@DetailsWeatherFragment).loadWeather(it.city.lat,it.city.lon)
+               WeatherLoader(this@DetailsWeatherFragment,this@DetailsWeatherFragment).loadWeather(it.city.lat,it.city.lon)
 
             }.start()
 
@@ -65,7 +67,7 @@ lateinit var localWeather: Weather
     }
 
     fun View.showSnackBar() {
-        Snackbar.make(mainView, "Исправно", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(mainView, "Исправно", Snackbar.LENGTH_SHORT).show();
     }
 
 
@@ -82,5 +84,8 @@ lateinit var localWeather: Weather
 
     override fun onResponse(weatherDTO: WeatherDTO) {
         renderData(weatherDTO)
+    }
+    override fun OnRespsnackbar(message: String) {
+        Snackbar.make(binding.mainView,message,Snackbar.LENGTH_LONG).show()
     }
 }
