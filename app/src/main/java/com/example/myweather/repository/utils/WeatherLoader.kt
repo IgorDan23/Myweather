@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.view.View
+import com.example.myweather.BuildConfig
 import com.example.myweather.MainActivity
 import com.example.myweather.repository.OnServerResponse
 import com.example.myweather.repository.SnackbarResp
@@ -30,7 +31,7 @@ class WeatherLoader(
             val uri = URL(urlText)
             val urlConnection: HttpURLConnection =
                 (uri.openConnection() as HttpURLConnection).apply {
-                    addRequestProperty("X-Yandex-API-Key", "a65c811d-e487-44d6-a8a0-5bb74573d5bf")
+                    addRequestProperty("X-Yandex-API-Key",BuildConfig.WEATHER_API_KEY )
                 }
             val responseCode = urlConnection.responseCode
             val serverside = 500..599
