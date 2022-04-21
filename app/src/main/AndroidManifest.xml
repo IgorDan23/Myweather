@@ -21,6 +21,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".view.detailsweather.DetailsWeatherService"/>
+        <receiver android:name=".view.detailsweather.MyBroadcastReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="WeatherWave" />
+
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>
