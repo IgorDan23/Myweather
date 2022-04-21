@@ -27,7 +27,7 @@ class DetailsWeatherService(val name: String = "") : IntentService(name) {
             val uri = URL(urlText)
             val urlConnection: HttpURLConnection =
                 (uri.openConnection() as HttpURLConnection).apply {
-                    addRequestProperty("X-Yandex-API-Key",BuildConfig.WEATHER_API_KEY )
+                    addRequestProperty(API_KEY,BuildConfig.WEATHER_API_KEY )
                 }
             val responseCode = urlConnection.responseCode
             val serverside = 500..599
