@@ -39,10 +39,14 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse, SnackbarResp {
     val receiver = object : BroadcastReceiver() {
         override fun onReceive(p0: Context?, intent: Intent?) {
             intent?.let { intent ->
+                intent.getStringExtra("KEY_SNACKBAR").let {
+                    OnRespsnackbar(it!!)
+                }
                 intent.getParcelableExtra<WeatherDTO>(KEY_Service_Mess)?.let {
                     onResponse(it)
                 }
             }
+
 
 
         }
@@ -60,6 +64,7 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse, SnackbarResp {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireContext().registerReceiver(receiver, IntentFilter(WAVE))
+
         arguments?.getParcelable<Weather>(KEY_WEATHER)?.let {
             localWeather = it
             requireContext().startService(
@@ -73,7 +78,9 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse, SnackbarResp {
                 })
 
 
+
         }
+
 
 
     }
@@ -112,5 +119,6 @@ class DetailsWeatherFragment : Fragment(), OnServerResponse, SnackbarResp {
 
     override fun OnRespsnackbar(message: String) {
         Snackbar.make(binding.mainView, message, Snackbar.LENGTH_LONG).show()
+
     }
 }
